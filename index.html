@@ -3,114 +3,936 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discipline & Enjoy Tracker</title>
+    <title>Zafar Ali - Earn Money Online</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: #1e293b; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; width: 380px; border-top: 5px solid #3b82f6; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #f5f7fa; }
         
-        /* Status Messages */
-        .status-box { padding: 15px; border-radius: 12px; font-weight: bold; margin-bottom: 20px; font-size: 14px; text-transform: uppercase; }
-        .rest-mode { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; }
-        .enjoy-mode { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981; }
-
-        .day-display { font-size: 22px; color: #fbbf24; font-weight: bold; margin-bottom: 5px; }
-        .date-display { font-size: 14px; color: #94a3b8; margin-bottom: 20px; }
+        /* Top Navigation */
+        .top-nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .logo span {
+            background: #ffd700;
+            color: #333;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        .top-icons {
+            display: flex;
+            gap: 20px;
+        }
+        .top-icons i {
+            font-size: 20px;
+            cursor: pointer;
+        }
         
-        .mission-box { background: #334155; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #475569; }
-        .btn { width: 100%; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        .active { background: #3b82f6; color: white; }
-        .locked { background: #4b5563 !important; color: #9ca3af !important; cursor: not-allowed; }
+        /* Balance Card */
+        .balance-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 20px;
+            padding: 25px;
+            border-radius: 20px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(102,126,234,0.3);
+        }
+        .balance-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        .balance-amount {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        .balance-amount small {
+            font-size: 16px;
+            font-weight: normal;
+            opacity: 0.8;
+        }
+        .balance-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 15px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
         
-        .footer-note { font-size: 11px; color: #64748b; margin-top: 20px; }
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px;
+        }
+        .action-btn {
+            background: white;
+            padding: 15px 5px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .action-btn i {
+            font-size: 24px;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        .action-btn span {
+            font-size: 12px;
+            display: block;
+            color: #333;
+        }
+        
+        /* Live Notifications */
+        .live-notification {
+            background: #2ecc71;
+            color: white;
+            padding: 12px 20px;
+            margin: 0 20px 20px 20px;
+            border-radius: 10px;
+            animation: slideIn 0.5s;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(46,204,113,0.3);
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .live-notification i {
+            font-size: 24px;
+        }
+        .notif-content {
+            flex: 1;
+        }
+        .notif-title {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .notif-sub {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        /* Sections */
+        .section {
+            background: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .section-header h3 {
+            color: #333;
+            font-size: 18px;
+        }
+        .section-header a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        /* Tasks */
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .task-item:last-child {
+            border-bottom: none;
+        }
+        .task-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        .task-icon i {
+            font-size: 24px;
+            color: white;
+        }
+        .task-details {
+            flex: 1;
+        }
+        .task-title {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        .task-reward {
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .task-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        /* Referral Box */
+        .referral-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px;
+        }
+        .referral-link {
+            background: rgba(255,255,255,0.2);
+            padding: 12px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .referral-link span {
+            font-size: 14px;
+        }
+        .referral-link i {
+            cursor: pointer;
+        }
+        
+        /* Withdraw Section */
+        .withdraw-section {
+            background: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .method-box {
+            border: 2px solid #f0f0f0;
+            padding: 15px 5px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .method-box.active {
+            border-color: #667eea;
+            background: #f0f3ff;
+        }
+        .method-box i {
+            font-size: 24px;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        .method-box span {
+            font-size: 12px;
+            display: block;
+        }
+        .amount-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 16px;
+        }
+        .withdraw-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top: 1px solid #f0f0f0;
+            z-index: 1000;
+        }
+        .nav-item {
+            text-align: center;
+            color: #999;
+            cursor: pointer;
+        }
+        .nav-item.active {
+            color: #667eea;
+        }
+        .nav-item i {
+            font-size: 22px;
+            margin-bottom: 3px;
+        }
+        .nav-item span {
+            font-size: 11px;
+            display: block;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 350px;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+        }
+        .modal-icon {
+            font-size: 50px;
+            color: #27ae60;
+            margin-bottom: 15px;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-btn.primary {
+            background: #667eea;
+            color: white;
+        }
+        .modal-btn.secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <!-- Dynamic Status Message -->
-    <div id="status-banner" class="status-box">Checking...</div>
-
-    <div id="day-name" class="day-display">Day Name</div>
-    <div id="full-date" class="date-display">Date Display</div>
-
-    <!-- Wednesday Task -->
-    <div class="mission-box">
-        <span style="font-size: 13px; color: #94a3b8;">MISSION 1</span>
-        <div style="font-weight: bold; color: #fff;">WEDNESDAY</div>
-        <button id="btn-wed" class="btn active" onclick="markTask('wed')">COMPLETE SESSION</button>
+<!-- Top Navigation -->
+<div class="top-nav">
+    <div class="logo">
+        Zafar Ali Fake Earning Website <span>ZB</span>
     </div>
-
-    <!-- Sunday Task -->
-    <div class="mission-box">
-        <span style="font-size: 13px; color: #94a3b8;">MISSION 2</span>
-        <div style="font-weight: bold; color: #fff;">SUNDAY</div>
-        <button id="btn-sun" class="btn active" onclick="markTask('sun')">COMPLETE SESSION</button>
+    <div class="top-icons">
+        <i class="fas fa-bell"></i>
+        <i class="fas fa-user-circle"></i>
     </div>
+</div>
 
-    <div class="footer-note">
-        Target: 104 Missions Per Year (2025)<br>
-        Status: Self-Control Mode Active
+<!-- Balance Card -->
+<div class="balance-card">
+    <div class="balance-label">Total Balance</div>
+    <div class="balance-amount">Rs <span id="balance">100000000</span> <small>PKR</small></div>
+    <div class="balance-stats">
+        <div class="stat-item">
+            <div class="stat-value" id="referrals">12</div>
+            <div class="stat-label">Referrals</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="tasks-done">8</div>
+            <div class="stat-label">Tasks Done</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="total-earned">4,00850</div>
+            <div class="stat-label">Total Earned</div>
+        </div>
+    </div>
+</div>
+
+<!-- Live Notification -->
+<div class="live-notification" id="liveNotif">
+    <i class="fas fa-check-circle"></i>
+    <div class="notif-content">
+        <div class="notif-title" id="notifTitle">Payment Sent!</div>
+        <div class="notif-sub" id="notifSub">Rs 5,0000 to Zafar Ali via JazzCash</div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="quick-actions">
+    <div class="action-btn" onclick="showWithdraw()">
+        <i class="fas fa-wallet"></i>
+        <span>Withdraw</span>
+    </div>
+    <div class="action-btn" onclick="showTasks()">
+        <i class="fas fa-tasks"></i>
+        <span>Tasks</span>
+    </div>
+    <div class="action-btn" onclick="showRefer()">
+        <i class="fas fa-users"></i>
+        <span>Refer</span>
+    </div>
+    <div class="action-btn" onclick="showProfile()">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
+    </div>
+</div>
+
+<!-- Tasks Section -->
+<div class="section" id="tasksSection">
+    <div class="section-header">
+        <h3>🔥 Daily Tasks</h3>
+        <a href="#">View All</a>
+    </div>
+    
+    <div class="task-item">
+        <div class="task-icon">
+            <i class="fab fa-youtube"></i>
+        </div>
+        <div class="task-details">
+            <div class="task-title">Watch YouTube Video</div>
+            <div class="task-reward">+ Rs 5000</div>
+        </div>
+        <button class="task-btn" onclick="startTask(500)">Start</button>
+    </div>
+    
+    <div class="task-item">
+        <div class="task-icon">
+            <i class="fab fa-instagram"></i>
+        </div>
+        <div class="task-details">
+            <div class="task-title">Follow on Instagram</div>
+            <div class="task-reward">+ Rs 2000</div>
+        </div>
+        <button class="task-btn" onclick="startTask(200)">Start</button>
+    </div>
+    
+    <div class="task-item">
+        <div class="task-icon">
+            <i class="fas fa-share-alt"></i>
+        </div>
+        <div class="task-details">
+            <div class="task-title">Share to 5 WhatsApp Groups</div>
+            <div class="task-reward">+ Rs 1,0000</div>
+        </div>
+        <button class="task-btn" onclick="startTask(1000)">Start</button>
+    </div>
+    
+    <div class="task-item">
+        <div class="task-icon">
+            <i class="fab fa-tiktok"></i>
+        </div>
+        <div class="task-details">
+            <div class="task-title">Like TikTok Video</div>
+            <div class="task-reward">+ Rs 1500</div>
+        </div>
+        <button class="task-btn" onclick="startTask(150)">Start</button>
+    </div>
+    
+    <div class="task-item">
+        <div class="task-icon">
+            <i class="fab fa-facebook"></i>
+        </div>
+        <div class="task-details">
+            <div class="task-title">Join Facebook Group</div>
+            <div class="task-reward">+ Rs 3000</div>
+        </div>
+        <button class="task-btn" onclick="startTask(300)">Start</button>
+    </div>
+</div>
+
+<!-- Referral Box -->
+<div class="referral-box" id="referSection">
+    <h3>👥 Invite Friends & Earn</h3>
+    <p style="font-size: 14px; margin: 10px 0;">Get Rs 500 per referral + 10% of their earnings!</p>
+    <div class="referral-link">
+        <span id="referLink">https://kyvenox.site/ref/Zafar123</span>
+        <i class="fas fa-copy" onclick="copyReferral()"></i>
+    </div>
+    <div style="margin-top: 10px; font-size: 12px;">
+        <span id="referCount">12</span> people joined using your link
+    </div>
+</div>
+
+<!-- Withdraw Section -->
+<div class="withdraw-section" id="withdrawSection" style="display: none;">
+    <h3>💳 Withdraw Earnings</h3>
+    <p style="color: #27ae60; margin-bottom: 15px;">Available Balance: Rs <span id="withdrawBalance">40,00000</span></p>
+    
+    <div class="method-grid" id="methodGrid">
+        <div class="method-box active" onclick="selectMethod('jazzcash')">
+            <i class="fas fa-mobile-alt"></i>
+            <span>JazzCash</span>
+        </div>
+        <div class="method-box" onclick="selectMethod('easypaisa')">
+            <i class="fas fa-mobile"></i>
+            <span>EasyPaisa</span>
+        </div>
+        <div class="method-box" onclick="selectMethod('bank')">
+            <i class="fas fa-university"></i>
+            <span>Bank</span>
+        </div>
+        <div class="method-box" onclick="selectMethod('sadapay')">
+            <i class="fas fa-credit-card"></i>
+            <span>SadaPay</span>
+        </div>
+        <div class="method-box" onclick="selectMethod('nayapay')">
+            <i class="fas fa-wallet"></i>
+            <span>NayaPay</span>
+        </div>
+        <div class="method-box" onclick="selectMethod('easypaisa')">
+            <i class="fas fa-hand-holding-usd"></i>
+            <span>Other</span>
+        </div>
+    </div>
+    
+    <div id="bankDetails" style="display: none;">
+        <select id="bankSelect" style="width:100%; padding:12px; border:2px solid #f0f0f0; border-radius:10px; margin-bottom:10px;">
+            <option value="hbl">HBL - Habib Bank</option>
+            <option value="ubl">UBL - United Bank</option>
+            <option value="mcb">MCB Bank</option>
+            <option value="alfalah">Bank Alfalah</option>
+            <option value="meezan">Meezan Bank</option>
+            <option value="faysal">Faysal Bank</option>
+            <option value="askari">Askari Bank</option>
+            <option value="habibmetro">Habib Metro</option>
+            <option value="silkbank">Silkbank</option>
+            <option value="summit">Summit Bank</option>
+            <option value="sindhbank">Sindh Bank</option>
+            <option value="punjabbank">Bank of Punjab</option>
+            <option value="khyber">Bank of Khyber</option>
+            <option value="zeb">Zarai Taraqiati Bank</option>
+        </select>
+    </div>
+    
+    <input type="number" class="amount-input" id="withdrawAmount" placeholder="Enter amount (min Rs 500)" value="100000">
+    
+    <button class="withdraw-btn" onclick="processWithdraw()">Withdraw Now</button>
+    
+    <div style="margin-top: 20px;">
+        <h4>📋 Recent Withdrawals</h4>
+        <div id="recentWithdrawals"></div>
+    </div>
+</div>
+
+<!-- Profile Section -->
+<div class="section" id="profileSection" style="display: none;">
+    <h3>👤 Profile Information</h3>
+    
+    <div style="display: flex; align-items: center; gap: 20px; margin: 20px 0;">
+        <img src="https://ui-avatars.com/api/?name=User&background=667eea&color=fff&size=80" style="border-radius: 50%;">
+        <div>
+            <h4 id="profileName">Enter Username</h4>
+            <p id="profileEmail">Enter Gamil</p>
+        </div>
+    </div>
+    
+    <div style="background: #f5f7fa; padding: 15px; border-radius: 10px; margin: 15px 0;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <span>Member Since:</span>
+            <span id="memberSince">January 2024</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <span>Account Status:</span>
+            <span style="color: #27ae60;">Active</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+            <span>Verification:</span>
+            <span style="color: #27ae60;">Verified</span>
+        </div>
+    </div>
+    
+    <button class="withdraw-btn" style="background: #f0f0f0; color: #333;" onclick="showWithdraw()">Withdraw Now</button>
+</div>
+
+<!-- Bottom Navigation -->
+<div class="bottom-nav">
+    <div class="nav-item active" onclick="showHome()">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </div>
+    <div class="nav-item" onclick="showTasks()">
+        <i class="fas fa-tasks"></i>
+        <span>Tasks</span>
+    </div>
+    <div class="nav-item" onclick="showRefer()">
+        <i class="fas fa-users"></i>
+        <span>Refer</span>
+    </div>
+    <div class="nav-item" onclick="showWithdraw()">
+        <i class="fas fa-wallet"></i>
+        <span>Withdraw</span>
+    </div>
+    <div class="nav-item" onclick="showProfile()">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal" id="successModal">
+    <div class="modal-content">
+        <div class="modal-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h3 id="modalTitle">Success!</h3>
+        <p id="modalMessage" style="margin: 15px 0;">Your withdrawal request has been submitted</p>
+        <div class="modal-buttons">
+            <button class="modal-btn primary" onclick="closeModal()">OK</button>
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div class="modal" id="errorModal">
+    <div class="modal-content">
+        <div class="modal-icon" style="color: #e74c3c;">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <h3 id="errorTitle">Verification Required</h3>
+        <p id="errorMessage">Please pay verification fee first</p>
+        <div class="modal-buttons">
+            <button class="modal-btn secondary" onclick="closeErrorModal()">Cancel</button>
+            <button class="modal-btn primary" onclick="payVerification()">Pay Now</button>
+        </div>
     </div>
 </div>
 
 <script>
-    function updateTracker() {
-        const now = new Date();
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const currentDay = days[now.getDay()];
+    // Global variables
+    let balance = 2050;
+    let referrals = 12;
+    let tasksDone = 8;
+    let totalEarned = 48500;
+    let selectedMethod = 'jazzcash';
+    let currentUser = {
+        name: 'User',
+        email: 'Zado@gmail.com',
+        refCode: 'zado123'
+    };
+    
+    // Recent withdrawals
+    const recentWithdrawals = [
+        { name: 'Zafar Ali', method: 'JazzCash', amount: 5000, time: '2 mins ago' },
+        { name: 'Habib Qazi', method: 'EasyPaisa', amount: 3000, time: '5 mins ago' },
+        { name: 'Bilal Ahmed', method: 'HBL', amount: 10000, time: '10 mins ago' },
+        { name: 'Zohaib Qazi', method: 'Meezan', amount: 7500, time: '15 mins ago' },
+        { name: 'Royle Qazi', method: 'UBL', amount: 2000, time: '20 mins ago' },
+        { name: 'Asham Couhadry', method: 'JazzCash', amount: 15000, time: '25 mins ago' },
+        { name: 'Abid Brohi', method: 'EasyPaisa', amount: 8000, time: '30 mins ago' },
+        { name: 'Saohb', method: 'Alfalah', amount: 12000, time: '35 mins ago' },
+        { name: 'Hamza', method: 'NayaPay', amount: 6000, time: '40 mins ago' },
+        { name: 'Ayesha', method: 'SadaPay', amount: 4000, time: '45 mins ago' }
+    ];
+    
+    // Fake transactions (for notifications)
+    const fakeNames = [
+        'Ali Zafi', 'Sana baloch', 'Bilal Ahmed', 'Zakir khan', 'Usman', 
+        'Fatima', 'Ahmed', 'Sara', 'Hamza', 'Ayesha',
+        'Zafar', 'Habib', 'Zohaib', 'Sunnel', 'Abid',
+        'Asghar', 'Raza', 'Kano', 'Zain', 'Muzaml'
+    ];
+    
+    const fakeAmounts = [
+        5000, 3000, 10000, 7500, 2000, 15000, 8000, 12000, 6000, 4000,
+        2500, 18000, 22000, 9000, 11000, 13000, 7000, 14000, 16000, 19000
+    ];
+    
+    const fakeMethods = ['JazzCash', 'EasyPaisa', 'HBL', 'UBL', 'Meezan', 'Alfalah', 'NayaPay', 'SadaPay'];
+    
+    // Recent withdrawals display
+    function updateRecentWithdrawals() {
+        let html = '';
+        recentWithdrawals.forEach(w => {
+            html += `<div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+                <div>
+                    <span style="font-weight: bold;">${w.name}</span>
+                    <span style="color: #999; font-size: 12px; margin-left: 5px;">${w.time}</span>
+                </div>
+                <div style="color: #27ae60;">Rs ${w.amount.toLocaleString()}</div>
+            </div>`;
+        });
+        document.getElementById('recentWithdrawals').innerHTML = html;
+    }
+    
+    // Live notifications
+    function showLiveNotification() {
+        let idx = Math.floor(Math.random() * fakeNames.length);
+        let name = fakeNames[idx];
+        let amount = fakeAmounts[Math.floor(Math.random() * fakeAmounts.length)];
+        let method = fakeMethods[Math.floor(Math.random() * fakeMethods.length)];
         
-        document.getElementById('day-name').innerText = currentDay;
-        document.getElementById('full-date').innerText = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-
-        // Status Banner Logic
-        const banner = document.getElementById('status-banner');
-        if (currentDay === 'Wednesday' || currentDay === 'Sunday') {
-            banner.innerText = "😍 TODAY IS A ENJOY DAY FOR THESE TASKS";
-            banner.className = "status-box enjoy-mode";
+        document.getElementById('notifTitle').innerText = 'Payment Sent!';
+        document.getElementById('notifSub').innerHTML = `Rs ${amount.toLocaleString()} to ${name} via ${method}`;
+        
+        let notif = document.getElementById('liveNotif');
+        notif.style.display = 'flex';
+        
+        setTimeout(() => {
+            notif.style.display = 'none';
+        }, 4000);
+    }
+    
+    // Start task
+    function startTask(reward) {
+        balance += reward;
+        tasksDone++;
+        totalEarned += reward;
+        
+        updateDisplay();
+        
+        document.getElementById('notifTitle').innerText = 'Task Completed!';
+        document.getElementById('notifSub').innerHTML = `You earned Rs ${reward}`;
+        
+        let notif = document.getElementById('liveNotif');
+        notif.style.display = 'flex';
+        
+        setTimeout(() => {
+            notif.style.display = 'none';
+        }, 3000);
+    }
+    
+    // Select withdrawal method
+    function selectMethod(method) {
+        selectedMethod = method;
+        
+        // Update active class
+        document.querySelectorAll('.method-box').forEach(box => {
+            box.classList.remove('active');
+        });
+        event.currentTarget.classList.add('active');
+        
+        // Show/hide bank details
+        if (method === 'bank') {
+            document.getElementById('bankDetails').style.display = 'block';
         } else {
-            banner.innerText = "⚠️ TODAY IS A REST DAY FOR THESE TASKS";
-            banner.className = "status-box rest-mode";
-        }
-
-        // Weekly Reset (Every Monday)
-        const weekID = getWeekNumber(now);
-        if (localStorage.getItem('saved_week') != weekID) {
-            localStorage.setItem('saved_week', weekID);
-            localStorage.setItem('wed_done', 'false');
-            localStorage.setItem('sun_done', 'false');
-        }
-
-        // Button Persistence
-        checkButton('wed', 'btn-wed', 'WEDNESDAY DONE ✅');
-        checkButton('sun', 'btn-sun', 'SUNDAY DONE ✅');
-    }
-
-    function checkButton(key, id, text) {
-        if (localStorage.getItem(key + '_done') === 'true') {
-            const b = document.getElementById(id);
-            b.disabled = true;
-            b.classList.add('locked');
-            b.innerText = text;
+            document.getElementById('bankDetails').style.display = 'none';
         }
     }
-
-    function markTask(day) {
-        if (confirm("Are you sure? Only 2 sessions per week allowed!")) {
-            localStorage.setItem(day + '_done', 'true');
-            updateTracker();
+    
+    // Process withdrawal
+    function processWithdraw() {
+        let amount = parseInt(document.getElementById('withdrawAmount').value);
+        
+        if (amount < 500) {
+            alert('Minimum withdrawal is Rs 500');
+            return;
+        }
+        
+        if (amount > balance) {
+            alert('Insufficient balance');
+            return;
+        }
+        
+        // Show verification modal for large amounts
+        if (amount >= 10000) {
+            document.getElementById('errorModal').style.display = 'flex';
+        } else {
+            // Fake success
+            balance -= amount;
+            updateDisplay();
+            
+            document.getElementById('modalTitle').innerText = 'Withdrawal Successful!';
+            document.getElementById('modalMessage').innerHTML = `Rs ${amount.toLocaleString()} will be sent to your ${selectedMethod} account within 24 hours.`;
+            document.getElementById('successModal').style.display = 'flex';
         }
     }
-
-    function getWeekNumber(d) {
-        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-        var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-        return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+    
+    // Pay verification fee (fake)
+    function payVerification() {
+        closeErrorModal();
+        
+        document.getElementById('modalTitle').innerText = 'Verification Required';
+        document.getElementById('modalMessage').innerHTML = 'Please send Rs 5,000 to 03283898828 via JazzCash/EasyPaisa to verify your account. This amount will be refunded with your withdrawal.';
+        document.getElementById('successModal').style.display = 'flex';
     }
-
-    updateTracker();
-    setInterval(updateTracker, 30000); // Sync every 30 seconds
+    
+    // Copy referral link
+    function copyReferral() {
+        navigator.clipboard.writeText(document.getElementById('referLink').innerText);
+        
+        document.getElementById('notifTitle').innerText = 'Copied!';
+        document.getElementById('notifSub').innerHTML = 'Referral link copied to clipboard';
+        
+        let notif = document.getElementById('liveNotif');
+        notif.style.display = 'flex';
+        
+        setTimeout(() => {
+            notif.style.display = 'none';
+        }, 2000);
+    }
+    
+    // Update display
+    function updateDisplay() {
+        document.getElementById('balance').innerText = balance.toLocaleString();
+        document.getElementById('referrals').innerText = referrals;
+        document.getElementById('tasks-done').innerText = tasksDone;
+        document.getElementById('total-earned').innerText = totalEarned.toLocaleString();
+        document.getElementById('withdrawBalance').innerText = balance.toLocaleString();
+    }
+    
+    // Navigation functions
+    function showHome() {
+        document.getElementById('tasksSection').style.display = 'block';
+        document.getElementById('referSection').style.display = 'block';
+        document.getElementById('withdrawSection').style.display = 'none';
+        document.getElementById('profileSection').style.display = 'none';
+        
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        document.querySelectorAll('.nav-item')[0].classList.add('active');
+    }
+    
+    function showTasks() {
+        document.getElementById('tasksSection').style.display = 'block';
+        document.getElementById('referSection').style.display = 'none';
+        document.getElementById('withdrawSection').style.display = 'none';
+        document.getElementById('profileSection').style.display = 'none';
+        
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        document.querySelectorAll('.nav-item')[1].classList.add('active');
+    }
+    
+    function showRefer() {
+        document.getElementById('tasksSection').style.display = 'none';
+        document.getElementById('referSection').style.display = 'block';
+        document.getElementById('withdrawSection').style.display = 'none';
+        document.getElementById('profileSection').style.display = 'none';
+        
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        document.querySelectorAll('.nav-item')[2].classList.add('active');
+    }
+    
+    function showWithdraw() {
+        document.getElementById('tasksSection').style.display = 'none';
+        document.getElementById('referSection').style.display = 'none';
+        document.getElementById('withdrawSection').style.display = 'block';
+        document.getElementById('profileSection').style.display = 'none';
+        
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        document.querySelectorAll('.nav-item')[3].classList.add('active');
+    }
+    
+    function showProfile() {
+        document.getElementById('tasksSection').style.display = 'none';
+        document.getElementById('referSection').style.display = 'none';
+        document.getElementById('withdrawSection').style.display = 'none';
+        document.getElementById('profileSection').style.display = 'block';
+        
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        document.querySelectorAll('.nav-item')[4].classList.add('active');
+    }
+    
+    function closeModal() {
+        document.getElementById('successModal').style.display = 'none';
+    }
+    
+    function closeErrorModal() {
+        document.getElementById('errorModal').style.display = 'none';
+    }
+    
+    // Initial setup
+    updateRecentWithdrawals();
+    
+    // Start live notifications
+    setInterval(showLiveNotification, 8000);
+    
+    // Initial notification
+    setTimeout(showLiveNotification, 2000);
+    
+    // Signup/Login prompt
+    let userEmail = prompt('Enter your email to login/signup (any email works):', 'user@gmail.com');
+    if (userEmail) {
+        currentUser.email = userEmail;
+        let userName = prompt('Enter your name:', 'User');
+        if (userName) {
+            currentUser.name = userName;
+            document.getElementById('profileName').innerText = userName;
+        }
+        document.getElementById('profileEmail').innerText = userEmail;
+        
+        // Update avatar
+        document.querySelector('img[src*="ui-avatars"]').src = `https://ui-avatars.com/api/?name=${userName}&background=667eea&color=fff&size=80`;
+        
+        // Show success
+        document.getElementById('notifTitle').innerText = 'Welcome!';
+        document.getElementById('notifSub').innerHTML = `You received Rs 2,350 signup bonus!`;
+        document.getElementById('liveNotif').style.display = 'flex';
+        setTimeout(() => {
+            document.getElementById('liveNotif').style.display = 'none';
+        }, 5000);
+    }
+    
+    console.log('%c🔴 SCAM EXPOSED - TERMUX HACKER', 'color: red; font-size: 30px; font-weight: bold');
+    console.log('%cOriginal sign_up_bonus: Rs 2,310 (dikhaya $8)', 'color: yellow; font-size: 16px');
+    console.log('%cYe sab fake transactions hain - paisa kabhi nahi milega!', 'color: orange; font-size: 14px');
+    console.log('%cJab 10,000+ withdraw karoge to verification fee mangein ge!', 'color: red; font-size: 16px');
 </script>
+
+<!-- Hidden evidence -->
+<div style="display: none;">
+    <!-- Original source code values -->
+    <div data-original-bonus="2310" data-fake-bonus="8" data-country="Pakistan"></div>
+</div>
+
+<!-- Small footer -->
+<div style="text-align: center; padding: 20px; color: #999; font-size: 12px; margin-bottom: 70px;">
+    Made by Zafar Ali ®2010 Pro v2.0 | Secure Payment Gateway | 24/7 Support
+</div>
 
 </body>
 </html>
