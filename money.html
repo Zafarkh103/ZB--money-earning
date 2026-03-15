@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>💰 Free Money</title>
+    <style>
+        body {
+            background: linear-gradient(45deg, gold, orange);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial;
+            padding: 20px;
+        }
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 300px;
+            animation: spin 0.5s;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .money { font-size: 80px; }
+        h1 { color: #333; }
+        .amount {
+            font-size: 50px;
+            color: green;
+            margin: 20px;
+        }
+        button {
+            background: gold;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="money">💰</div>
+        <h1>FREE MONEY!</h1>
+        <div class="amount">₹50,00</div>
+        <button onclick="claim()">CLAIM NOW</button>
+        <p style="margin-top:20px; color:#999;">Only for first 100 users</p>
+    </div>
+    <script>
+        function claim() { alert('Processing payment...'); }
+    </script>
+</body>
+</html>

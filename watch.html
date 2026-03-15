@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>⌚ Free Watch</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            text-align: center;
+            max-width: 300px;
+        }
+        .watch { font-size: 80px; }
+        h1 { color: #333; }
+        .price {
+            text-decoration: line-through;
+            color: #999;
+        }
+        .free {
+            color: green;
+            font-size: 30px;
+            margin: 10px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="watch">⌚</div>
+        <h1>Apple Watch</h1>
+        <div class="price">₹40,000</div>
+        <div class="free">FREE</div>
+        <button onclick="claim()">GET FREE</button>
+        <p>Limited stock: 5 left</p>
+    </div>
+    <script>
+        function claim() { alert('Processing...'); }
+    </script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+{
+  "name": "Eid Special Gifts",
+  "short_name": "Eid Gifts",
+  "description": "Eid Mubarak - Special Gifts for You",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192x192?text=🎁",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://via.placeholder.com/512x512?text=🎁",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "iPhone Gift",
+      "short_name": "iPhone",
+      "description": "Free iPhone",
+      "url": "/?gift=iphone",
+      "icons": [{ "src": "https://via.placeholder.com/96x96?text=📱", "sizes": "96x96" }]
+    },
+    {
+      "name": "Cash Gift",
+      "short_name": "Cash",
+      "description": "Free Cash",
+      "url": "/?gift=cash",
+      "icons": [{ "src": "https://via.placeholder.com/96x96?text=💰", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "categories": ["gifts", "eid", "shopping"],
+  "screenshots": [
+    {
+      "src": "https://via.placeholder.com/1080x1920?text=Gift",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Gift Screen"
+    }
+  ]
+}

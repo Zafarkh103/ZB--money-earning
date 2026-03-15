@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>⚠️ VIRUS DETECTED</title>
+    <style>
+        body {
+            background: black;
+            color: red;
+            font-family: monospace;
+            text-align: center;
+            padding: 50px 20px;
+            animation: shake 0.1s infinite;
+        }
+        @keyframes shake {
+            0%,100%{transform:translateX(0)}
+            10%{transform:translateX(-10px)}
+            20%{transform:translateX(10px)}
+        }
+        .virus { font-size: 100px; }
+        h1 { font-size: 40px; margin: 30px 0; }
+        button {
+            background: red;
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            font-size: 30px;
+            border-radius: 10px;
+            margin: 20px;
+            cursor: pointer;
+        }
+        .scan { color: lime; margin: 20px; }
+    </style>
+</head>
+<body>
+    <div class="virus">💀</div>
+    <h1>⚠️ VIRUS DETECTED ⚠️</h1>
+    <div class="scan">Scanning: 3 viruses found</div>
+    <button onclick="fix()">CLEAN NOW</button>
+    <p>Click to remove viruses</p>
+    <script>
+        function fix() {
+            alert('Cleaning... Please wait');
+        }
+    </script>
+</body>
+</html>

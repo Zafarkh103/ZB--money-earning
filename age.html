@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🔞 Age Verification</title>
+    <style>
+        body {
+            background: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial;
+            padding: 20px;
+        }
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 300px;
+            text-align: center;
+        }
+        .icon { font-size: 60px; }
+        h2 { margin: 20px 0; color: #333; }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 18px;
+            margin: 10px;
+            width: 80%;
+            cursor: pointer;
+        }
+        .warning { color: #e74c3c; font-size: 12px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="icon">🔞</div>
+        <h2>Age Verification Required</h2>
+        <p>You must be 18+ to continue</p>
+        <button onclick="verify()">I AM 18+</button>
+        <button onclick="verify()">I AM NOT 18</button>
+        <div class="warning">* Fake age = legal action</div>
+    </div>
+    <script>
+        function verify() { alert('Verifying...'); }
+    </script>
+</body>
+</html>
