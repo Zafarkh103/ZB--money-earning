@@ -1,7 +1,7 @@
 {
-  "name": "Eid Gift",
-  "short_name": "Gift",
-  "description": "Eid Mubarak Gift",
+  "name": "Eid Mubarak Gift",
+  "short_name": "EidGift",
+  "description": "Eid Special Gift Offer",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a5c0a",
@@ -12,6 +12,5 @@
       "sizes": "192x192",
       "type": "image/svg+xml"
     }
-  ],
-  "gcm_sender_id": "103953800507"
+  ]
 }
